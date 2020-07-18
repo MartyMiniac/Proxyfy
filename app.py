@@ -5,7 +5,10 @@ from bs4 import *
 app = Flask(__name__)
 SITE_NAME = 'https://google.com/'
 
-@app.route('/', defaults={'path': ''})
+@app.route('/')
+def index():
+  return "please enter the url after / or use /go/<url> for experimental version"
+
 @app.route('/<path:path>')
 def proxy(path):
   if path[:8] !='https://':
@@ -34,6 +37,13 @@ def proxy(path):
   #return get(path).content
   #return render_template('test.html')
   return soup.prettify('utf-8')
+
+@app.route('/go/<path:path>')
+def goproxy(path):
+  if path[:8] !='https://':
+    path='https://'+path
+
+  return get(path).content
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080, debug=True)
