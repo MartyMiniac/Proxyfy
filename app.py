@@ -14,20 +14,18 @@ def proxy(path):
   html=get(path).text
 
   soup = BeautifulSoup(html, 'html.parser')
-  for i in soup.find_all('img'):
-    url=i.get('src')
-    for allLinks in soup.find_all(href=True):
-      if allLinks['href'] and not allLinks['href'].startswith("http"):
-        if allLinks['href'][:2]=='//':
-          allLinks['href']='/https:'+allLinks['href']
-          continue
-        allLinks['href']='/'+path+allLinks['href']
+  for allLinks in soup.find_all(href=True):
+    if allLinks['href'] and not allLinks['href'].startswith("http"):
+      if allLinks['href'][:2]=='//':
+        allLinks['href']='/https:'+allLinks['href']
+        continue
+      allLinks['href']='/'+path+allLinks['href']
 
-    for allLinks in soup.find_all(src=True):
-        if allLinks['src'] and not allLinks['src'].startswith("http"):
-          if allLinks['src'][:2]=='//':
-            continue
-          allLinks['src']=path[:-1]+allLinks['src']
+  for allLinks in soup.find_all(src=True):
+      if allLinks['src'] and not allLinks['src'].startswith("http"):
+        if allLinks['src'][:2]=='//':
+          continue
+        allLinks['src']=path[:-1]+allLinks['src']
 
 
   #return get(path).content
