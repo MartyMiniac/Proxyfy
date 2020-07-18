@@ -27,6 +27,9 @@ def proxy(path):
           continue
         allLinks['src']=path[:-1]+allLinks['src']
 
+  for allLinks in soup.find_all('form'):
+    allLinks['action']='/'+path[:-1]+allLinks['action']
+
 
   #return get(path).content
   #return render_template('test.html')
